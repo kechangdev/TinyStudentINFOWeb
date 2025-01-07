@@ -1,154 +1,183 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>学生成绩管理系统用户登录</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
-    }
-    .login-container {
-      width: 350px;
-      padding: 30px;
-      background-color: #ffffff;
-      margin: 100px auto;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .login-container h2 {
-      text-align: center;
-      margin-bottom: 25px;
-      color: #333333;
-    }
-    .login-container label {
-      display: block;
-      margin-bottom: 5px;
-      color: #555555;
-    }
-    .login-container input[type="text"],
-    .login-container input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #cccccc;
-      border-radius: 4px;
-    }
-    .login-container button {
-      width: 100%;
-      padding: 12px;
-      background-color: #4285F4;
-      border: none;
-      border-radius: 4px;
-      color: #ffffff;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .login-container button:hover {
-      background-color: #357ae8;
-    }
-    .login-container .register-link {
-      text-align: center;
-      margin-top: 15px;
-    }
-    .login-container .register-link a {
-      color: #4285F4;
-      text-decoration: none;
-    }
-    .login-container .register-link a:hover {
-      text-decoration: underline;
-    }
-    .error-message {
-      color: red;
-      font-size: 14px;
-      text-align: center;
-      margin-top: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>学生成绩管理系统用户登录</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        /* 头部样式 */
+        .header___j_Z_f {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header___j_Z_f .logo___Cf9cM {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+        }
+        .header___j_Z_f .title___zhtS2 {
+            font-size: 24px;
+            color: #333333;
+            font-weight: bold;
+        }
+
+        /* 登录表单样式 */
+        .login-container {
+            width: 350px;
+            padding: 30px;
+            background-color: #ffffff;
+            margin: 50px auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333333;
+        }
+        .login-container label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555555;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4285F4;
+            border: none;
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .login-container button:hover {
+            background-color: #357ae8;
+        }
+        .login-container .register-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .login-container .register-link a {
+            color: #4285F4;
+            text-decoration: none;
+        }
+        .login-container .register-link a:hover {
+            text-decoration: underline;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
+<!-- 头部部分 -->
+<div class="header___j_Z_f">
+    <img alt="logo" class="logo___Cf9cM" src="https://kechang.uk/favicon.ico">
+    <span class="title___zhtS2">Kechang</span>
+</div>
+
+<!-- 登录表单部分 -->
 <div class="login-container">
-  <h2>用户登录</h2>
-  <form id="login-form">
-    <label for="username">用户名：</label>
-    <input type="text" id="username" name="username" required>
+    <h2>用户登录</h2>
+    <form id="login-form">
+        <label for="username">用户名：</label>
+        <input type="text" id="username" name="username" required>
 
-    <label for="password">密码：</label>
-    <input type="password" id="password" name="password" required>
+        <label for="password">密码：</label>
+        <input type="password" id="password" name="password" required>
 
-    <button type="submit">登录</button>
-  </form>
-  <div class="register-link">
-    没有账号？<a href="/register">立即注册</a>
-  </div>
-  <div id="error-message" class="error-message" style="display: none;"></div>
+        <button type="submit">登录</button>
+    </form>
+    <div class="register-link">
+        没有账号？<a href="/register">立即注册</a>
+    </div>
+    <div id="error-message" class="error-message" style="display: none;"></div>
 </div>
 
 <script>
-  // 页面加载时检查用户是否已登录
-  window.addEventListener('DOMContentLoaded', async () => {
-    try {
-      const response = await fetch('/api/islogin', {
-        method: 'GET',
-        credentials: 'include' // 如果需要发送cookie等凭证
-      });
+    // 页面加载时检查用户是否已登录
+    window.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await fetch('/api/islogin', {
+                method: 'GET',
+                credentials: 'include' // 如果需要发送cookie等凭证
+            });
 
-      if (response.ok) {
-        // 用户已登录，跳转到主页
-        window.location.href = '/index';
-      }
-      // 如果不是200状态码，则不做任何操作，用户可以看到登录表单
-    } catch (error) {
-      console.error('检查登录状态时出错:', error);
-      // 可以选择在这里显示一个错误提示，但根据需求，此处保持不操作
-    }
-  });
+            if (response.ok) {
+                // 用户已登录，跳转到主页
+                window.location.href = '/index';
+            }
+            // 如果不是200状态码，则不做任何操作，用户可以看到登录表单
+        } catch (error) {
+            console.error('检查登录状态时出错:', error);
+            // 可以选择在这里显示一个错误提示，但根据需求，此处保持不操作
+        }
+    });
 
-  // 监听表单提交事件
-  document.getElementById('login-form').addEventListener('submit', async function(event) {
-    event.preventDefault();  // 阻止默认表单提交
+    // 监听表单提交事件
+    document.getElementById('login-form').addEventListener('submit', async function(event) {
+        event.preventDefault();  // 阻止默认表单提交
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
 
-    const errorMessageElement = document.getElementById('error-message');
-    errorMessageElement.style.display = 'none';  // 清除上次的错误信息
+        const errorMessageElement = document.getElementById('error-message');
+        errorMessageElement.style.display = 'none';  // 清除上次的错误信息
 
-    try {
-      // 创建 URL 编码的表单数据
-      const params = new URLSearchParams();
-      params.append('username', username);
-      params.append('password', password);
+        try {
+            // 创建 URL 编码的表单数据
+            const params = new URLSearchParams();
+            params.append('username', username);
+            params.append('password', password);
 
-      // 发送异步 POST 请求
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: params.toString(),
-        credentials: 'include' // 如果需要发送cookie等凭证
-      });
+            // 发送异步 POST 请求
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: params.toString(),
+                credentials: 'include' // 如果需要发送cookie等凭证
+            });
 
-      // 服务器返回纯文本响应
-      const resultText = await response.text();
+            // 服务器返回纯文本响应
+            const resultText = await response.text();
 
-      // 检查登录是否成功
-      if (response.ok) {
-        // 登录成功的逻辑（比如跳转到主页）
-        // alert('登录成功!');
-        window.location.href = '/index';  // 登录成功后跳转
-      } else {
-        // 显示错误信息
-        errorMessageElement.textContent = resultText || '登录失败，请重试';
-        errorMessageElement.style.display = 'block';
-      }
-    } catch (error) {
-      // 网络错误或其他异常
-      errorMessageElement.textContent = '请求失败，请稍后重试';
-      errorMessageElement.style.display = 'block';
-    }
-  });
+            // 检查登录是否成功
+            if (response.ok) {
+                // 登录成功的逻辑（比如跳转到主页）
+                // alert('登录成功!');
+                window.location.href = '/index';  // 登录成功后跳转
+            } else {
+                // 显示错误信息
+                errorMessageElement.textContent = resultText || '登录失败，请重试';
+                errorMessageElement.style.display = 'block';
+            }
+        } catch (error) {
+            // 网络错误或其他异常
+            errorMessageElement.textContent = '请求失败，请稍后重试';
+            errorMessageElement.style.display = 'block';
+        }
+    });
 </script>
 </body>
 </html>
