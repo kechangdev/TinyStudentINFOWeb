@@ -1,0 +1,9 @@
+# ninja log v6
+875	935	1736232785045036398	TinyStudentINFOWeb	5a9df30766040952
+1	497	1736232784171036351	CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o	bf47f35211fc074d
+1	22	1736232808546037653	build.ninja	ae1c056fe696ffd8
+1	339	1736232742153034107	CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o	3ed919764618510e
+1	462	1736232742153034107	CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o	b0dd094671728e27
+1	710	1736232784171036351	CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o	41ddae8513c72996
+1	875	1736232784171036351	CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o	26d1b24dc5fbcaf6
+1	742	1736232784171036351	CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o	99e4f512d649177

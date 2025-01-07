@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>主页</title>
+  <style>
+    /* 重置默认样式 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: #f9f9f9;
+    }
+
+    /* 顶部栏样式 */
+    .top-bar {
+      width: 100%;
+      padding: 15px 30px;
+      background-color: #4285F4;
+      color: #fff;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      position: relative; /* 为下拉菜单定位提供基础 */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .username-container {
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .username {
+      font-size: 16px;
+    }
+
+    /* 下拉菜单样式 */
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: #fff;
+      color: #333;
+      min-width: 100px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      display: none; /* 初始隐藏 */
+      z-index: 1000;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: #333;
+      transition: background-color 0.2s;
+    }
+
+    .dropdown a:hover {
+      background-color: #f1f1f1;
+    }
+
+    /* 主体内容样式 */
+    .main-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .box-container {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: #fff;
+      border: 2px solid #4285F4;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      color: #4285F4;
+      font-size: 20px;
+      font-weight: bold;
+      transition: background-color 0.3s, color 0.3s, transform 0.3s;
+    }
+
+    .box:hover {
+      background-color: #4285F4;
+      color: #fff;
+      transform: scale(1.05);
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 600px) {
+      .box-container {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .box {
+        width: 150px;
+        height: 150px;
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 顶部栏显示用户名及下拉菜单 -->
+<div class="top-bar">
+  <div class="username-container" id="usernameContainer">
+    <div class="username" id="username">加载中...</div>
+    <div class="dropdown" id="dropdownMenu">
+      <!-- 动态内容 -->
+    </div>
+  </div>
+</div>
+
+<!-- 主体内容，包含三个链接框 -->
+<div class="main-content">
+  <div class="box-container">
+    <!-- 为“用户管理”添加唯一的id -->
+    <a href="/admin" class="box" id="userManagement">用户管理</a>
+    <a href="/student" class="box" id="studentManagement">学生成绩</a>
+    <a href="/logs" class="box" id="logManagement">日志查看</a>
+  </div>
+</div>
+
+<!-- JavaScript 获取并显示用户名，并处理登录/登出功能 -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const usernameElement = document.getElementById('username');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const usernameContainer = document.getElementById('usernameContainer');
+    let isLoggedIn = false; // 用于跟踪用户是否已登录
+
+    // 获取用户名
+    fetch('/api/username', {
+      method: 'GET',
+      credentials: 'same-origin' // 确保发送同源的 Cookie
+      // 如果 API 在不同域，请使用 'include'
+      // credentials: 'include'
+    })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('网络响应不正常');
+              }
+              return response.text(); // 使用 text() 而非 json()
+            })
+            .then(data => {
+              // 假设服务器直接返回用户名作为纯文本
+              if (data && data.trim() !== "") {
+                usernameElement.textContent = data.trim();
+                isLoggedIn = true; // 设置为已登录
+                // 设置下拉菜单为登出选项
+                dropdownMenu.innerHTML = '<a href="#" id="logout">登出</a>';
+
+                // 添加登出事件监听
+                const logoutLink = document.getElementById('logout');
+                logoutLink.addEventListener('click', function(event) {
+                  event.preventDefault();
+                  fetch('/api/logout', {
+                    method: 'GET',
+                    credentials: 'same-origin' // 确保发送同源的 Cookie
+                  })
+                          .then(response => {
+                            if (!response.ok) {
+                              throw new Error('登出失败');
+                            }
+                            return response.text(); // 使用 text() 而非 json()
+                          })
+                          .then(logoutData => {
+                            // 假设服务器在登出成功时返回 'success'
+                            if (logoutData.trim() === 'success') {
+                              // 重载页面或重定向到登录页
+                              window.location.reload();
+                              // 或者: window.location.href = '/login';
+                            } else {
+                              throw new Error('登出失败');
+                            }
+                          })
+                          .catch(error => {
+                            console.error('登出时出错:', error);
+                            alert('登出失败，请重试。');
+                          });
+                });
+              } else {
+                usernameElement.textContent = '未登录';
+                // 设置下拉菜单为登录和注册选项
+                dropdownMenu.innerHTML = `
+          <a href="/login" id="login">登录</a>
+          <a href="/register" id="register">注册</a>
+        `;
+              }
+            })
+            .catch(error => {
+              console.error('获取用户名时出错:', error);
+              usernameElement.textContent = '未登录';
+              // 设置下拉菜单为登录和注册选项
+              dropdownMenu.innerHTML = `
+        <a href="/login" id="login">登录</a>
+        <a href="/register" id="register">注册</a>
+      `;
+            });
+
+    // 切换下拉菜单显示
+    usernameContainer.addEventListener('click', function(event) {
+      event.stopPropagation(); // 防止事件冒泡
+      dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // 点击页面其他地方关闭下拉菜单
+    document.addEventListener('click', function() {
+      dropdownMenu.style.display = 'none';
+    });
+
+    // 检查是否存在特定的 Cookie（例如 'sessionid'）
+    function hasCookie(name) {
+      return document.cookie.split(';').some((item) => item.trim().startsWith(name + '='));
+    }
+
+    // 定义需要检查登录状态的管理链接及其对应的目标 URL
+    const managementLinks = [
+      { id: 'userManagement', url: '/admin' },
+      { id: 'studentManagement', url: '/student' },
+      { id: 'logManagement', url: '/logs' }
+    ];
+
+    managementLinks.forEach(link => {
+      const element = document.getElementById(link.id);
+      if (element) {
+        element.addEventListener('click', function(event) {
+          event.preventDefault(); // 阻止默认跳转行为
+
+          // 检查是否有相关的 Cookie
+          // 假设 Cookie 名为 'cookie'，请根据实际情况调整
+          if (!hasCookie('cookie')) {
+            // 如果没有 Cookie，直接跳转到登录页
+            alert('您需要先登录哦');
+            window.location.href = '/login';
+            return;
+          }
+
+          // 如果有 Cookie，执行相应的逻辑
+          if (link.id === 'userManagement') {
+            // 对于“用户管理”，先验证是否为 root 用户
+            fetch('/api/isroot', {
+              method: 'GET',
+              credentials: 'same-origin' // 确保发送同源的 Cookie
+            })
+                    .then(response => {
+                      if (response.status === 200) {
+                        // 权限验证通过，跳转到用户管理页面
+                        window.location.href = link.url;
+                      } else {
+                        // 权限不足，提示用户
+                        alert('权限不足');
+                      }
+                    })
+                    .catch(error => {
+                      console.error('权限验证时出错:', error);
+                      alert('请求失败，请稍后重试。');
+                    });
+          } else if (link.id === 'logManagement') {
+            // 对于“日志查看”，先验证是否为 root 用户
+            fetch('/api/isroot', {
+              method: 'GET',
+              credentials: 'same-origin' // 确保发送同源的 Cookie
+            })
+                    .then(response => {
+                      if (response.status === 200) {
+                        // 权限验证通过，跳转到用户管理页面
+                        window.location.href = link.url;
+                      } else {
+                        // 权限不足，提示用户
+                        alert('权限不足');
+                      }
+                    })
+                    .catch(error => {
+                      console.error('权限验证时出错:', error);
+                      alert('请求失败，请稍后重试。');
+                    });
+          } else {
+            // 对于其他管理链接，直接跳转
+            window.location.href = link.url;
+          }
+        });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

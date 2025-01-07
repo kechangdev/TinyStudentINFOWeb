@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>学生信息管理系统</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333333;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        thead {
+            background-color: #007BFF;
+            color: #ffffff;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .action-btn {
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .action-btn:hover {
+            background-color: #218838;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-container {
+            margin-top: 30px;
+            border: 1px solid #007BFF;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .form-container h2 {
+            margin-top: 0;
+            color: #007BFF;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button.submit-btn {
+            background-color: #007BFF;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button.submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #007BFF;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -30px 0 0 -30px;
+            display: none; /* Initially hidden */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            th, td {
+                padding: 8px 10px;
+            }
+
+            .action-btn {
+                padding: 6px 10px;
+            }
+
+            .loader {
+                width: 40px;
+                height: 40px;
+                margin: -20px 0 0 -20px;
+            }
+        }
+    </style>
+    <script>
+        // 获取并显示学生信息
+        function fetchStudentInfo() {
+            showLoader();
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/api/getstudentinfo", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    hideLoader();
+                    if (xhr.status === 200) {
+                        displayStudentInfo(xhr.responseText);
+                    } else {
+                        alert("获取学生信息失败: " + xhr.responseText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        // 解析并显示学生信息
+        function displayStudentInfo(data) {
+            var display = document.getElementById("studentInfo");
+            display.innerHTML = ""; // 清空现有内容
+            var lines = data.trim().split('\n');
+            if (lines.length === 0) {
+                display.innerHTML = "<p>没有学生信息可显示。</p>";
+                return;
+            }
+
+            var userType = lines[0].trim();
+            if (userType === "ADMIN") {
+                // 管理员查看所有学生信息
+                var table = document.createElement("table");
+                var thead = document.createElement("thead");
+                thead.innerHTML = "<tr>" +
+                    "<th>ID</th>" +
+                    "<th>姓名</th>" +
+                    "<th>算法</th>" +
+                    "<th>数据结构</th>" +
+                    "<th>操作系统</th>" +
+                    "<th>数据库</th>" +
+                    "<th>计算机网络</th>" +
+                    "<th>操作</th>" +
+                    "</tr>";
+                table.appendChild(thead);
+
+                var tbody = document.createElement("tbody");
+
+                for (var i = 1; i < lines.length; i++) {
+                    var fields = lines[i].split(',');
+                    if (fields.length < 7) continue; // 数据不完整
+                    var tr = document.createElement("tr");
+                    tr.innerHTML = "<td>" + fields[0] + "</td>" +
+                        "<td>" + fields[1] + "</td>" +
+                        "<td>" + fields[2] + "</td>" +
+                        "<td>" + fields[3] + "</td>" +
+                        "<td>" + fields[4] + "</td>" +
+                        "<td>" + fields[5] + "</td>" +
+                        "<td>" + fields[6] + "</td>";
+
+                    // 添加修改按钮
+                    var modifyButton = document.createElement("button");
+                    modifyButton.textContent = "修改";
+                    modifyButton.className = "action-btn";
+                    modifyButton.onclick = (function(id) {
+                        return function() {
+                            showModifyForm(id);
+                        };
+                    })(fields[0]);
+
+                    var actionTd = document.createElement("td");
+                    actionTd.appendChild(modifyButton);
+                    tr.appendChild(actionTd);
+
+                    tbody.appendChild(tr);
+                }
+
+                table.appendChild(tbody);
+                display.appendChild(table);
+
+                // 显示添加学生信息的表单
+                document.getElementById("addStudentForm").classList.remove("hidden");
+            } else if (userType === "STUDENT") {
+                // 学生查看自己的信息
+                var table = document.createElement("table");
+                var thead = document.createElement("thead");
+                thead.innerHTML = "<tr>" +
+                    "<th>课程</th>" +
+                    "<th>成绩</th>" +
+                    "</tr>";
+                table.appendChild(thead);
+
+                var tbody = document.createElement("tbody");
+
+                var courses = ["算法", "数据结构", "操作系统", "数据库", "计算机网络"];
+                for (var i = 1; i < lines.length; i++) {
+                    var fields = lines[i].split(',');
+                    if (fields.length < 5) continue; // 数据不完整
+                    for (var j = 0; j < 5; j++) {
+                        var tr = document.createElement("tr");
+                        tr.innerHTML = "<td>" + courses[j] + "</td>" +
+                            "<td>" + fields[j] + "</td>";
+                        tbody.appendChild(tr);
+                    }
+                }
+
+                table.appendChild(tbody);
+                display.appendChild(table);
+
+                // 隐藏添加和修改表单
+                document.getElementById("addStudentForm").classList.add("hidden");
+                document.getElementById("modifyStudentForm").classList.add("hidden");
+            } else {
+                display.innerHTML = "<p>无法识别的用户类型。</p>";
+            }
+        }
+
+        // 显示添加学生信息的表单
+        function showAddForm() {
+            document.getElementById("addStudentForm").classList.toggle("hidden");
+        }
+
+        // 处理添加学生信息
+        function addStudent() {
+            var id = document.getElementById("addId").value.trim();
+            var name = document.getElementById("addName").value.trim();
+            var algorithms = document.getElementById("addAlgorithms").value.trim();
+            var dataStructures = document.getElementById("addDataStructures").value.trim();
+            var operatingSystems = document.getElementById("addOperatingSystems").value.trim();
+            var databases = document.getElementById("addDatabases").value.trim();
+            var computerNetworks = document.getElementById("addComputerNetworks").value.trim();
+
+            if (!id || !name || !algorithms || !dataStructures || !operatingSystems || !databases || !computerNetworks) {
+                alert("请填写所有字段。");
+                return;
+            }
+
+            var params = "id=" + encodeURIComponent(id) +
+                "&name=" + encodeURIComponent(name) +
+                "&algorithms=" + encodeURIComponent(algorithms) +
+                "&data_structures=" + encodeURIComponent(dataStructures) +
+                "&operating_systems=" + encodeURIComponent(operatingSystems) +
+                "&databases=" + encodeURIComponent(databases) +
+                "&computer_networks=" + encodeURIComponent(computerNetworks);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/addstudentinfo", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        alert("学生信息添加成功。");
+                        fetchStudentInfo();
+                        document.getElementById("addStudentForm").reset();
+                        document.getElementById("addStudentForm").classList.add("hidden");
+                    } else {
+                        alert("添加失败: " + xhr.responseText);
+                    }
+                }
+            };
+            xhr.send(params);
+        }
+
+        // 显示修改学生信息的表单
+        function showModifyForm(id) {
+            document.getElementById("modifyStudentForm").classList.remove("hidden");
+            document.getElementById("modifyId").value = id;
+        }
+
+        // 处理修改学生信息
+        function modifyStudent() {
+            var id = document.getElementById("modifyId").value.trim();
+            var algorithms = document.getElementById("modifyAlgorithms").value.trim();
+            var dataStructures = document.getElementById("modifyDataStructures").value.trim();
+            var operatingSystems = document.getElementById("modifyOperatingSystems").value.trim();
+            var databases = document.getElementById("modifyDatabases").value.trim();
+            var computerNetworks = document.getElementById("modifyComputerNetworks").value.trim();
+
+            if (!id || !algorithms || !dataStructures || !operatingSystems || !databases || !computerNetworks) {
+                alert("请填写所有字段。");
+                return;
+            }
+
+            var params = "id=" + encodeURIComponent(id) +
+                "&algorithms=" + encodeURIComponent(algorithms) +
+                "&data_structures=" + encodeURIComponent(dataStructures) +
+                "&operating_systems=" + encodeURIComponent(operatingSystems) +
+                "&databases=" + encodeURIComponent(databases) +
+                "&computer_networks=" + encodeURIComponent(computerNetworks);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/api/modifystudentinfo", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        alert("学生信息修改成功。");
+                        fetchStudentInfo();
+                        document.getElementById("modifyStudentForm").reset();
+                        document.getElementById("modifyStudentForm").classList.add("hidden");
+                    } else {
+                        alert("修改失败: " + xhr.responseText);
+                    }
+                }
+            };
+            xhr.send(params);
+        }
+
+        // 显示加载指示器
+        function showLoader() {
+            document.getElementById("loader").style.display = 'block';
+        }
+
+        // 隐藏加载指示器
+        function hideLoader() {
+            document.getElementById("loader").style.display = 'none';
+        }
+
+        window.onload = function() {
+            fetchStudentInfo();
+        };
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1>学生信息管理系统</h1>
+
+    <div id="studentInfo" class="student-info">
+        正在加载学生信息...
+    </div>
+
+    <!-- 添加学生信息表单 -->
+    <div id="addStudentForm" class="form-container hidden">
+        <h2>添加学生信息</h2>
+        <form onsubmit="event.preventDefault(); addStudent();">
+            <div class="form-group">
+                <label for="addId">ID:</label>
+                <input type="number" id="addId" required>
+            </div>
+            <div class="form-group">
+                <label for="addName">姓名:</label>
+                <input type="text" id="addName" required>
+            </div>
+            <div class="form-group">
+                <label for="addAlgorithms">算法成绩:</label>
+                <input type="number" id="addAlgorithms" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="addDataStructures">数据结构成绩:</label>
+                <input type="number" id="addDataStructures" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="addOperatingSystems">操作系统成绩:</label>
+                <input type="number" id="addOperatingSystems" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="addDatabases">数据库成绩:</label>
+                <input type="number" id="addDatabases" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="addComputerNetworks">计算机网络成绩:</label>
+                <input type="number" id="addComputerNetworks" min="0" max="100" required>
+            </div>
+            <button type="submit" class="submit-btn">添加学生</button>
+        </form>
+    </div>
+
+    <!-- 修改学生信息表单 -->
+    <div id="modifyStudentForm" class="form-container hidden">
+        <h2>修改学生信息</h2>
+        <form onsubmit="event.preventDefault(); modifyStudent();">
+            <input type="hidden" id="modifyId">
+            <div class="form-group">
+                <label for="modifyAlgorithms">算法成绩:</label>
+                <input type="number" id="modifyAlgorithms" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="modifyDataStructures">数据结构成绩:</label>
+                <input type="number" id="modifyDataStructures" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="modifyOperatingSystems">操作系统成绩:</label>
+                <input type="number" id="modifyOperatingSystems" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="modifyDatabases">数据库成绩:</label>
+                <input type="number" id="modifyDatabases" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="modifyComputerNetworks">计算机网络成绩:</label>
+                <input type="number" id="modifyComputerNetworks" min="0" max="100" required>
+            </div>
+            <button type="submit" class="submit-btn">修改学生</button>
+        </form>
+    </div>
+</div>
+
+<!-- Loading Spinner -->
+<div class="loader" id="loader"></div>
+
+</body>
+</html>

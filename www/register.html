@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>用户注册</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+    .register-container {
+      width: 350px;
+      padding: 30px;
+      background-color: #ffffff;
+      margin: 100px auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .register-container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333333;
+    }
+    .register-container label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555555;
+    }
+    .register-container input[type="text"],
+    .register-container input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+    }
+    .register-container button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4285F4;
+      border: none;
+      border-radius: 4px;
+      color: #ffffff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .register-container button:hover {
+      background-color: #357ae8;
+    }
+    .register-container .register-link {
+      text-align: center;
+      margin-top: 15px;
+    }
+    .error-message {
+      color: red;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="register-container">
+  <h2>用户注册</h2>
+  <form id="register-form">
+    <label for="username">用户名：</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="password">密码：</label>
+    <input type="password" id="password" name="password" required>
+
+    <label for="password">邀请码：</label>
+    <input type="password" id="invite_code" name="invite_code" required>
+
+    <button type="submit">注册</button>
+  </form>
+  <div id="error-message" class="error-message" style="display: none;"></div>
+</div>
+
+<script>
+  // 监听表单提交事件
+  document.getElementById('register-form').addEventListener('submit', async function(event) {
+    event.preventDefault();  // 阻止默认表单提交
+
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const invite_code = document.getElementById('invite_code').value;
+
+    const errorMessageElement = document.getElementById('error-message');
+    errorMessageElement.style.display = 'none';  // 清除上次的错误信息
+
+    try {
+      // 创建 URL 编码的表单数据
+      const params = new URLSearchParams();
+      params.append('username', username);
+      params.append('password', password);
+      params.append('invite_code', invite_code);
+
+      // 发送异步 POST 请求
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: params.toString()
+      });
+
+      // 假设服务器返回纯文本响应
+      const resultText = await response.text();
+
+      // 检查登录是否成功
+      if (response.ok) {
+        // 注册成功的逻辑（比如跳转到主页）
+        alert('注册成功!');
+        window.location.href = '/';  // 注册成功后跳转
+      } else {
+        // 显示错误信息
+        errorMessageElement.textContent = resultText || '注册失败，请重试';
+        errorMessageElement.style.display = 'block';
+      }
+    } catch (error) {
+      // 网络错误或其他异常
+      errorMessageElement.textContent = '请求失败，请稍后重试';
+      errorMessageElement.style.display = 'block';
+    }
+  });
+</script>
+</body>
+</html>

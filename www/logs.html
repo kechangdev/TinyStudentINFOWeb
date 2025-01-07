@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员面板 - 日志查看</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .controls .filter {
+            display: flex;
+            align-items: center;
+        }
+
+        /* 隐藏日志级别筛选 */
+        .controls .filter {
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        thead {
+            background-color: #007BFF;
+            color: #ffffff;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dddddd;
+            word-break: break-word;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            background-color: #007BFF;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            margin: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .pagination button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .pagination span {
+            margin: 0 10px;
+            font-weight: bold;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 20px;
+            color: #28a745;
+        }
+
+        .error {
+            text-align: center;
+            margin-top: 20px;
+            color: #dc3545;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #007BFF;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -30px 0 0 -30px;
+            display: none; /* Initially hidden */
+            z-index: 1000;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            th, td {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .controls .filter {
+                margin-bottom: 10px;
+            }
+
+            .pagination button {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .loader {
+                width: 40px;
+                height: 40px;
+                margin: -20px 0 0 -20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>日志查看</h1>
+
+    <div class="controls">
+        <div class="filter">
+            <!-- 日志级别筛选已取消 -->
+            <label for="logLevel">日志级别:</label>
+            <select id="logLevel">
+                <option value="">全部</option>
+                <option value="DEBUG">DEBUG</option>
+                <option value="INFO">INFO</option>
+                <option value="WARNING">WARNING</option>
+                <option value="ERROR">ERROR</option>
+                <option value="CRITICAL">CRITICAL</option>
+            </select>
+        </div>
+        <div class="pagination-info">
+            <!-- 可添加额外控制元素 -->
+        </div>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>日志ID</th>
+            <th>时间</th>
+            <th>日志级别</th>
+            <th>用户ID</th>
+            <th>日志</th>
+        </tr>
+        </thead>
+        <tbody id="logs-table-body">
+        <!-- 日志列表将通过JavaScript动态填充 -->
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <button id="prevPage">上一页</button>
+        <span id="pageInfo">第 1 页</span>
+        <button id="nextPage">下一页</button>
+    </div>
+
+    <div id="message" class="message"></div>
+    <div id="error" class="error"></div>
+    <div class="loader" id="loader"></div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const logsTableBody = document.getElementById('logs-table-body');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+        const pageInfo = document.getElementById('pageInfo');
+        const messageDiv = document.getElementById('message');
+        const errorDiv = document.getElementById('error');
+        const loader = document.getElementById('loader');
+
+        let currentPage = 1;
+        const pageSize = 50;
+        let totalLogs = 0;
+        let allLogs = []; // 存储所有日志数据
+
+        // 显示加载指示器
+        function showLoader() {
+            loader.style.display = 'block';
+        }
+
+        // 隐藏加载指示器
+        function hideLoader() {
+            loader.style.display = 'none';
+        }
+
+        // 显示错误消息
+        function showError(message) {
+            errorDiv.textContent = message;
+            setTimeout(() => {
+                errorDiv.textContent = '';
+            }, 5000);
+        }
+
+        // 显示成功消息
+        function showMessage(message) {
+            messageDiv.textContent = message;
+            setTimeout(() => {
+                messageDiv.textContent = '';
+            }, 3000);
+        }
+
+        // 获取并显示日志
+        async function fetchLogs() {
+            showLoader();
+            try {
+                const response = await fetch('/api/getlogs');
+                if (!response.ok) {
+                    throw new Error('网络响应不正常');
+                }
+
+                const data = await response.text();
+                allLogs = parsePlainData(data);
+                totalLogs = allLogs.length;
+                currentPage = 1; // 重置到第一页
+                populateLogsTable();
+                updatePagination();
+                hideLoader();
+            } catch (error) {
+                console.error('获取日志时出错:', error);
+                showError('无法加载日志数据。请稍后再试。');
+                hideLoader();
+            }
+        }
+
+        // 解析纯文本数据（每行一个日志，字段以逗号分隔：id,timestamp,log_level,user_id,message）
+        function parsePlainData(data) {
+            const logs = [];
+            const lines = data.trim().split('\n');
+            lines.forEach(line => {
+                // 使用正则匹配，考虑到日志消息中可能包含逗号
+                const regex = /^(\d+),(\d+),([A-Z]+),(\d+),(.*)$/;
+                const match = line.match(regex);
+                if (match) {
+                    const [, id, timestamp, log_level, user_id, message] = match;
+                    logs.push({
+                        id: id.trim(),
+                        timestamp: parseInt(timestamp.trim(), 10),
+                        log_level: log_level.trim(),
+                        user_id: user_id.trim(),
+                        message: message.trim()
+                    });
+                }
+            });
+            return logs;
+        }
+
+        // 填充日志表格
+        function populateLogsTable() {
+            logsTableBody.innerHTML = ''; // 清空现有内容
+            if (allLogs.length === 0) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = 5; // 现在有5列：日志ID, 时间, 日志级别, 用户ID, 日志
+                td.textContent = '暂无日志数据。';
+                td.style.textAlign = 'center';
+                tr.appendChild(td);
+                logsTableBody.appendChild(tr);
+                return;
+            }
+
+            const startIndex = (currentPage - 1) * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, totalLogs);
+            const logsToDisplay = allLogs.slice(startIndex, endIndex);
+
+            logsToDisplay.forEach(log => {
+                const tr = document.createElement('tr');
+
+                const tdId = document.createElement('td');
+                tdId.textContent = log.id;
+                tr.appendChild(tdId);
+
+                const tdTime = document.createElement('td');
+                const date = new Date(log.timestamp * 1000); // 假设timestamp是Unix时间戳
+                tdTime.textContent = date.toLocaleString();
+                tr.appendChild(tdTime);
+
+                const tdLevel = document.createElement('td');
+                tdLevel.textContent = log.log_level;
+                tr.appendChild(tdLevel);
+
+                const tdUserId = document.createElement('td');
+                tdUserId.textContent = log.user_id;
+                tr.appendChild(tdUserId);
+
+                const tdMessage = document.createElement('td');
+                tdMessage.textContent = log.message;
+                tr.appendChild(tdMessage);
+
+                logsTableBody.appendChild(tr);
+            });
+        }
+
+        // 更新分页信息和按钮状态
+        function updatePagination() {
+            const totalPages = Math.ceil(totalLogs / pageSize);
+            pageInfo.textContent = `第 ${currentPage} 页，共 ${totalPages} 页`;
+
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage >= totalPages;
+        }
+
+        // 事件监听器
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                populateLogsTable();
+                updatePagination();
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(totalLogs / pageSize);
+            if (currentPage < totalPages) {
+                currentPage++;
+                populateLogsTable();
+                updatePagination();
+            }
+        });
+
+        // 初始加载
+        fetchLogs();
+    });
+</script>
+
+</body>
+</html>

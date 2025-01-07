@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员面板 - 用户管理</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        thead {
+            background-color: #007BFF;
+            color: #ffffff;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: #ffffff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 20px;
+            color: #28a745;
+        }
+
+        .error {
+            text-align: center;
+            margin-top: 20px;
+            color: #dc3545;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #007BFF;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -30px 0 0 -30px;
+            display: none; /* Initially hidden */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            th, td {
+                padding: 8px 10px;
+            }
+
+            .delete-btn {
+                padding: 6px 10px;
+            }
+
+            .loader {
+                width: 40px;
+                height: 40px;
+                margin: -20px 0 0 -20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>用户管理</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>用户ID</th>
+            <th>用户名</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody id="user-table-body">
+        <!-- 用户列表将通过JavaScript动态填充 -->
+        </tbody>
+    </table>
+    <div id="message" class="message"></div>
+    <div id="error" class="error"></div>
+    <div class="loader" id="loader"></div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const userTableBody = document.getElementById('user-table-body');
+        const messageDiv = document.getElementById('message');
+        const errorDiv = document.getElementById('error');
+        const loader = document.getElementById('loader');
+        const REFRESH_INTERVAL = 30000; // 30秒
+
+        let refreshTimer;
+
+        // 显示加载指示器
+        function showLoader() {
+            loader.style.display = 'block';
+        }
+
+        // 隐藏加载指示器
+        function hideLoader() {
+            loader.style.display = 'none';
+        }
+
+        // 获取用户列表
+        function fetchUserList() {
+            showLoader();
+            fetch('/api/getuserlist')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('网络响应不正常');
+                    }
+                    return response.text(); // 获取纯文本数据
+                })
+                .then(data => {
+                    const users = parsePlainData(data);
+                    populateUserTable(users);
+                    hideLoader();
+                })
+                .catch(error => {
+                    console.error('获取用户列表时出错:', error);
+                    errorDiv.textContent = '无法加载用户列表。请稍后再试。';
+                    hideLoader();
+                    setTimeout(() => {
+                        errorDiv.textContent = '';
+                    }, 5000);
+                });
+        }
+
+        // 解析纯文本数据（每行一个用户，字段以逗号分隔：id,username）
+        function parsePlainData(data) {
+            const users = [];
+            const lines = data.trim().split('\n');
+            lines.forEach(line => {
+                const [id, username] = line.split(',');
+                if (id && username) {
+                    users.push({ id: id.trim(), username: username.trim() });
+                }
+            });
+            return users;
+        }
+
+        // 填充用户表格
+        function populateUserTable(users) {
+            userTableBody.innerHTML = ''; // 清空现有内容
+            if (users.length === 0) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = 3; // 现在有3列：用户ID, 用户名, 操作
+                td.textContent = '暂无用户数据。';
+                td.style.textAlign = 'center';
+                tr.appendChild(td);
+                userTableBody.appendChild(tr);
+                return;
+            }
+
+            users.forEach(user => {
+                const tr = document.createElement('tr');
+
+                const tdId = document.createElement('td');
+                tdId.textContent = user.id;
+                tr.appendChild(tdId);
+
+                const tdUsername = document.createElement('td');
+                tdUsername.textContent = user.username;
+                tr.appendChild(tdUsername);
+
+                const tdAction = document.createElement('td');
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = '删除';
+                deleteButton.classList.add('delete-btn');
+                deleteButton.addEventListener('click', () => deleteUser(user.id));
+                tdAction.appendChild(deleteButton);
+                tr.appendChild(tdAction);
+
+                userTableBody.appendChild(tr);
+            });
+        }
+
+        // 删除用户
+        function deleteUser(userId) {
+            if (!confirm('确定要删除此用户吗？')) {
+                return;
+            }
+
+            showLoader();
+            fetch('/api/deluser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain' // 保持为纯文本格式
+                },
+                body: String(userId) // 仅包含用户ID作为纯文本
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('删除请求失败');
+                    }
+                    return response.text(); // 处理为纯文本
+                })
+                .then(data => {
+                    // 假设服务器返回 "success" 表示删除成功
+                    if (data.trim().toLowerCase() === 'success') {
+                        messageDiv.textContent = '用户已成功删除。';
+                        fetchUserList(); // 重新加载用户列表
+                        setTimeout(() => {
+                            messageDiv.textContent = '';
+                        }, 3000);
+                    } else {
+                        // 如果不是 "success"，则认为是错误消息
+                        throw new Error(data);
+                    }
+                })
+                .catch(error => {
+                    console.error('删除用户时出错:', error);
+                    errorDiv.textContent = '无法删除用户。' + (error.message ? `原因：${error.message}` : '请稍后再试。');
+                    hideLoader();
+                    setTimeout(() => {
+                        errorDiv.textContent = '';
+                    }, 5000);
+                });
+        }
+
+        // 自动定时刷新用户列表
+        function startAutoRefresh() {
+            refreshTimer = setInterval(fetchUserList, REFRESH_INTERVAL);
+        }
+
+        // 停止自动刷新（如果需要）
+        function stopAutoRefresh() {
+            if (refreshTimer) {
+                clearInterval(refreshTimer);
+            }
+        }
+
+        // 初始加载用户列表
+        fetchUserList();
+        startAutoRefresh();
+
+        // 可选：在页面卸载时停止自动刷新
+        window.addEventListener('beforeunload', stopAutoRefresh);
+    });
+</script>
+
+</body>
+</html>

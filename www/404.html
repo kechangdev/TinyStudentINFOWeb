@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面未找到 - 404</title>
+    <!-- 引入Google字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+        }
+
+        .error-code {
+            font-size: 10rem;
+            font-weight: 700;
+            color: #ff6b6b;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .message {
+            font-size: 1.5rem;
+            margin: 20px 0;
+        }
+
+        .actions a {
+            display: inline-block;
+            margin: 10px 5px;
+            padding: 12px 25px;
+            background-color: #4a90e2;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: background-color 0.3s ease;
+        }
+
+        .actions a:hover {
+            background-color: #357ab8;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translatey(0px);
+            }
+            50% {
+                transform: translatey(-20px);
+            }
+            100% {
+                transform: translatey(0px);
+            }
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 600px) {
+            .error-code {
+                font-size: 6rem;
+            }
+
+            .message {
+                font-size: 1.2rem;
+            }
+
+            .actions a {
+                padding: 10px 20px;
+                margin: 8px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="error-code">404</div>
+    <div class="message">抱歉，您访问的页面不存在。</div>
+    <div class="actions">
+        <a href="/">返回首页</a>
+    </div>
+</div>
+</body>
+</html>
