@@ -1,7 +1,7 @@
 # TinyStudentINFOWeb
 
 ```
-docker run --rm -p -d 18899:10086 tinystudentinfoweb:latest
+docker run --rm -d -p 18899:10086 tinystudentinfoweb:latest
 ```
 # 概述
 
