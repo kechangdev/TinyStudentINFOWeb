@@ -8,6 +8,7 @@
 #include <sstream>      // 字符串流
 #include <iostream>     // 输入输出流
 #include <cstring>      // memset
+#include <csignal>      // std::signal, SIGINT
 
 #include "../conf.h"
 
@@ -26,14 +27,32 @@ void NetServer::setHandler(const std::string& path, RequestHandler handler) {
     handlers[path] = handler;
 }
 
+// 静态成员 stopFlag 初始化
+bool NetServer::stopFlag = false;
+// 信号处理函数
+void NetServer::signalHandler(int signum) {
+    if (signum == SIGINT) {
+        std::cout << Utils::getTimeAndMessage(
+            0, "INFO", "Received SIGINT (Ctrl + C), shutting down...") << std::endl;
+        stopFlag = true;
+        // exit(EXIT_SUCCESS);
+        // 这里仅做标记，不宜直接调用 close 等操作
+        // 因为信号处理函数里做太多工作可能不安全
+    }
+}
+
 // 线程池版本
 void NetServer::run() {
-    // 初始化线程池
+    // 1. 注册 SIGINT 的处理函数
+    NetServer::stopFlag = false; // 每次 run() 前重置
+    std::signal(SIGINT, NetServer::signalHandler);
+
+    // 2. 初始化线程池
     ThreadPool pool(THREAD_POOL_SIZE);
 
-    struct sockaddr_in address; // 定义地址结构
-    int opt = 1; // 套接字选项
-    socklen_t addrlen = sizeof(address); // 地址结构的长度
+    struct sockaddr_in address;
+    int opt = 1;
+    socklen_t addrlen = sizeof(address);
 
     // 创建套接字
     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -55,7 +74,7 @@ void NetServer::run() {
     memset(&address, 0, sizeof(address));
     address.sin_family = AF_INET; // IPv4
     address.sin_addr.s_addr = INADDR_ANY; // 监听所有可用接口
-    address.sin_port = htons(serverPort); // 设置端口，使用网络字节序
+    address.sin_port = htons(serverPort);
 
     // 绑定套接字到指定的地址和端口
     if (bind(serverSocket, (struct sockaddr *)&address, sizeof(address)) < 0) {
@@ -65,7 +84,7 @@ void NetServer::run() {
     }
     std::cout << Utils::getTimeAndMessage(0, "INFO", "IPV4:PORT Bind Socket Success.") << std::endl;
 
-    // 开始监听，设置最大等待连接数
+    // 开始监听
     if (listen(serverSocket, MAX_CONNECT_NUM) < 0) {
         std::cout << Utils::getTimeAndMessage(0, "INFO", "Listen Socket failed.") << std::endl;
         close(serverSocket);
@@ -74,19 +93,28 @@ void NetServer::run() {
     std::cout << Utils::getTimeAndMessage(0, "INFO", "Listen Socket Success.") << std::endl;
 
     isRunning = true;
-    std::cout << Utils::getTimeAndMessage(0, "INFO", "Server started on port " + std::to_string(serverPort)) << std::endl;
+    std::cout << Utils::getTimeAndMessage(
+        0, "INFO", "Server started on port " + std::to_string(serverPort)) << std::endl;
     std::cout << Utils::getTimeAndMessage(0, "INFO", "Waiting for connection...") << std::endl;
 
-    // 主循环，持续接受并处理客户端连接
+    // 3. 主循环
     while (isRunning) {
+        // 如果检测到 stopFlag 为 true，就退出循环
+        if (NetServer::stopFlag) {
+            std::cout << Utils::getTimeAndMessage(
+                0, "INFO", "Stop flag set. Terminating server loop...") << std::endl;
+            isRunning = false;
+            break;
+        }
+
         struct sockaddr_in clientAddress;
         socklen_t clientAddrLen = sizeof(clientAddress);
         int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddrLen);
         if (clientSocket < 0) {
-            if (isRunning) { // 如果服务器仍在运行，输出错误信息
+            if (isRunning) {
                 std::cout << Utils::getTimeAndMessage(0, "INFO", "Socket accept failed.") << std::endl;
             }
-            continue; // 继续接受下一个连接
+            continue;
         }
 
         // 将处理客户端的任务提交给线程池
@@ -95,9 +123,88 @@ void NetServer::run() {
         });
     }
 
-    // 关闭服务器套接字
+    // 4. 停止：跳出循环后，关闭服务器套接字
     close(serverSocket);
+    std::cout << Utils::getTimeAndMessage(0, "INFO", "Server stopped gracefully.") << std::endl;
 }
+
+
+// // 线程池版本
+// void NetServer::run() {
+//     // 1. 注册 SIGINT 的处理函数
+//     NetServer::stopFlag = false;          // 每次 run() 前重置
+//     std::signal(SIGINT, NetServer::signalHandler);
+//
+//     // 初始化线程池
+//     ThreadPool pool(THREAD_POOL_SIZE);
+//
+//     struct sockaddr_in address; // 定义地址结构
+//     int opt = 1; // 套接字选项
+//     socklen_t addrlen = sizeof(address); // 地址结构的长度
+//
+//     // 创建套接字
+//     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+//     if (serverSocket == -1) {
+//         std::cout << Utils::getTimeAndMessage(0, "INFO", "Socket creation failed.") << std::endl;
+//         return;
+//     }
+//     std::cout << Utils::getTimeAndMessage(0, "INFO", "Socket creation Success.") << std::endl;
+//
+//     // 设置套接字选项
+//     if (setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+//         std::cout << Utils::getTimeAndMessage(0, "INFO", "Socket setsockopt failed.") << std::endl;
+//         close(serverSocket);
+//         return;
+//     }
+//     std::cout << Utils::getTimeAndMessage(0, "INFO", "Socket setsockopt Success.") << std::endl;
+//
+//     // 配置地址结构
+//     memset(&address, 0, sizeof(address));
+//     address.sin_family = AF_INET; // IPv4
+//     address.sin_addr.s_addr = INADDR_ANY; // 监听所有可用接口
+//     address.sin_port = htons(serverPort); // 设置端口，使用网络字节序
+//
+//     // 绑定套接字到指定的地址和端口
+//     if (bind(serverSocket, (struct sockaddr *)&address, sizeof(address)) < 0) {
+//         std::cout << Utils::getTimeAndMessage(0, "INFO", "IPV4:PORT Bind Socket failed.") << std::endl;
+//         close(serverSocket);
+//         return;
+//     }
+//     std::cout << Utils::getTimeAndMessage(0, "INFO", "IPV4:PORT Bind Socket Success.") << std::endl;
+//
+//     // 开始监听，设置最大等待连接数
+//     if (listen(serverSocket, MAX_CONNECT_NUM) < 0) {
+//         std::cout << Utils::getTimeAndMessage(0, "INFO", "Listen Socket failed.") << std::endl;
+//         close(serverSocket);
+//         return;
+//     }
+//     std::cout << Utils::getTimeAndMessage(0, "INFO", "Listen Socket Success.") << std::endl;
+//
+//     isRunning = true;
+//     std::cout << Utils::getTimeAndMessage(0, "INFO", "Server started on port " + std::to_string(serverPort)) << std::endl;
+//     std::cout << Utils::getTimeAndMessage(0, "INFO", "Waiting for connection...") << std::endl;
+//
+//     // 主循环，持续接受并处理客户端连接
+//     while (isRunning) {
+//         struct sockaddr_in clientAddress;
+//         socklen_t clientAddrLen = sizeof(clientAddress);
+//         int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddrLen);
+//         if (clientSocket < 0) {
+//             if (isRunning) { // 如果服务器仍在运行，输出错误信息
+//                 std::cout << Utils::getTimeAndMessage(0, "INFO", "Socket accept failed.") << std::endl;
+//             }
+//             continue; // 继续接受下一个连接
+//         }
+//
+//         // 将处理客户端的任务提交给线程池
+//         pool.enqueue([this, clientSocket, clientAddress]() {
+//             this->handleClient(clientSocket, clientAddress);
+//         });
+//     }
+//
+//     // 关闭服务器套接字
+//     close(serverSocket);
+// }
 
 // 处理单个客户端连接的函数
 void NetServer::handleClient(int clientSocket, const struct sockaddr_in& clientAddress) {

@@ -38,6 +38,12 @@ public:
     // 启动并运行服务器，阻塞调用线程
     void run();
 
+    // 用于标记是否收到 SIGINT
+    static bool stopFlag;
+
+    // 信号处理函数
+    static void signalHandler(int signum);
+
     // 设置特定路径的请求处理函数
     void setHandler(const std::string& path, RequestHandler handler);
 
