@@ -7,7 +7,7 @@ docker run --rm -d -p 18899:10086 tinystudentinfoweb:latest
 ```
 # 概述
 
-`TinyStudentINFOWeb` 是一个使用 C++ 实现的基于面向对象编程的简单的学生信息展示站点项目，有如下特点：
+`TinyStudentINFOWeb` 是一个基于 C++、HTML、CSS、JS、POSIX 实现的基于面向对象编程的简单的学生信息展示站点项目，有如下特点：
 
 - 页面实现（登录界面、注册界面、管理面板）
 - 模块化项目结构，低耦合，易开发
