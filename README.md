@@ -1,6 +1,8 @@
 # TinyStudentINFOWeb
 
+# Quick Start
 ```
+docker build -t tinystudentinfoweb:latest .
 docker run --rm -d -p 18899:10086 tinystudentinfoweb:latest
 ```
 # 概述
@@ -17,7 +19,6 @@ docker run --rm -d -p 18899:10086 tinystudentinfoweb:latest
 - 管理员面板，便于后期维护
 - 容器化编排，便于运维管理
 - 日志系统清晰，设置不同的日志等级，便于运维服务维护
-![image](https://github.com/user-attachments/assets/2a9b02ac-550b-435e-8dcf-39f18a5c51c1)
 
 
 **目录结构如下：**
