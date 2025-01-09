@@ -69,7 +69,7 @@ docker run --rm -d -p 18899:10086 tinystudentinfoweb:latest
 ![image](https://github.com/user-attachments/assets/849a59e1-5513-4851-b561-2577c9282e6c)
 
 ## 前端
-根据后端提供的 API 发起请求和处理响应
+通过 JS 根据后端提供的 API 发起请求和处理响应
 
 ---
 
