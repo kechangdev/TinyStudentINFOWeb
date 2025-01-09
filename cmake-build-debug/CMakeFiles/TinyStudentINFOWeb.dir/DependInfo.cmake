@@ -8,12 +8,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/kechang/Codes/TinyStudentINFOWeb/main.cpp" "CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o" "gcc" "CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o.d"
-  "/Users/kechang/Codes/TinyStudentINFOWeb/src/Auth.cpp" "CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o" "gcc" "CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o.d"
-  "/Users/kechang/Codes/TinyStudentINFOWeb/src/DatabaseManager.cpp" "CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o" "gcc" "CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o.d"
-  "/Users/kechang/Codes/TinyStudentINFOWeb/src/Handlers.cpp" "CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o" "gcc" "CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o.d"
-  "/Users/kechang/Codes/TinyStudentINFOWeb/src/NetServer.cpp" "CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o" "gcc" "CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o.d"
-  "/Users/kechang/Codes/TinyStudentINFOWeb/src/Utils.cpp" "CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o" "gcc" "CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o.d"
+  "/home/kechang/Codes/TinyStudentINFOWeb/main.cpp" "CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o" "gcc" "CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o.d"
+  "/home/kechang/Codes/TinyStudentINFOWeb/src/Auth.cpp" "CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o" "gcc" "CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o.d"
+  "/home/kechang/Codes/TinyStudentINFOWeb/src/DatabaseManager.cpp" "CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o" "gcc" "CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o.d"
+  "/home/kechang/Codes/TinyStudentINFOWeb/src/Handlers.cpp" "CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o" "gcc" "CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o.d"
+  "/home/kechang/Codes/TinyStudentINFOWeb/src/NetServer.cpp" "CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o" "gcc" "CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o.d"
+  "/home/kechang/Codes/TinyStudentINFOWeb/src/Utils.cpp" "CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o" "gcc" "CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

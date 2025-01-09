@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake
+CMAKE_COMMAND = /home/kechang/Programs/clion-2024.3.1.1/bin/cmake/linux/x64/bin/cmake
 
 # The command to remove a file.
-RM = /Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -E rm -f
+RM = /home/kechang/Programs/clion-2024.3.1.1/bin/cmake/linux/x64/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/kechang/Codes/TinyStudentINFOWeb
+CMAKE_SOURCE_DIR = /home/kechang/Codes/TinyStudentINFOWeb
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug
+CMAKE_BINARY_DIR = /home/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/TinyStudentINFOWeb.dir/depend.make
@@ -70,88 +70,88 @@ include CMakeFiles/TinyStudentINFOWeb.dir/progress.make
 include CMakeFiles/TinyStudentINFOWeb.dir/flags.make
 
 CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o: CMakeFiles/TinyStudentINFOWeb.dir/flags.make
-CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o: /Users/kechang/Codes/TinyStudentINFOWeb/main.cpp
+CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o: /home/kechang/Codes/TinyStudentINFOWeb/main.cpp
 CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o: CMakeFiles/TinyStudentINFOWeb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o -MF CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o.d -o CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o -c /Users/kechang/Codes/TinyStudentINFOWeb/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o -MF CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o.d -o CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o -c /home/kechang/Codes/TinyStudentINFOWeb/main.cpp
 
 CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/kechang/Codes/TinyStudentINFOWeb/main.cpp > CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kechang/Codes/TinyStudentINFOWeb/main.cpp > CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.i
 
 CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/kechang/Codes/TinyStudentINFOWeb/main.cpp -o CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kechang/Codes/TinyStudentINFOWeb/main.cpp -o CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.s
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o: CMakeFiles/TinyStudentINFOWeb.dir/flags.make
-CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o: /Users/kechang/Codes/TinyStudentINFOWeb/src/Auth.cpp
+CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o: /home/kechang/Codes/TinyStudentINFOWeb/src/Auth.cpp
 CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o: CMakeFiles/TinyStudentINFOWeb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o -MF CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o.d -o CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o -c /Users/kechang/Codes/TinyStudentINFOWeb/src/Auth.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o -MF CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o.d -o CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o -c /home/kechang/Codes/TinyStudentINFOWeb/src/Auth.cpp
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/kechang/Codes/TinyStudentINFOWeb/src/Auth.cpp > CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kechang/Codes/TinyStudentINFOWeb/src/Auth.cpp > CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.i
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/kechang/Codes/TinyStudentINFOWeb/src/Auth.cpp -o CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kechang/Codes/TinyStudentINFOWeb/src/Auth.cpp -o CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.s
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o: CMakeFiles/TinyStudentINFOWeb.dir/flags.make
-CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o: /Users/kechang/Codes/TinyStudentINFOWeb/src/DatabaseManager.cpp
+CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o: /home/kechang/Codes/TinyStudentINFOWeb/src/DatabaseManager.cpp
 CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o: CMakeFiles/TinyStudentINFOWeb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o -MF CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o.d -o CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o -c /Users/kechang/Codes/TinyStudentINFOWeb/src/DatabaseManager.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o -MF CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o.d -o CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o -c /home/kechang/Codes/TinyStudentINFOWeb/src/DatabaseManager.cpp
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/kechang/Codes/TinyStudentINFOWeb/src/DatabaseManager.cpp > CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kechang/Codes/TinyStudentINFOWeb/src/DatabaseManager.cpp > CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.i
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/kechang/Codes/TinyStudentINFOWeb/src/DatabaseManager.cpp -o CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kechang/Codes/TinyStudentINFOWeb/src/DatabaseManager.cpp -o CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.s
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o: CMakeFiles/TinyStudentINFOWeb.dir/flags.make
-CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o: /Users/kechang/Codes/TinyStudentINFOWeb/src/Handlers.cpp
+CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o: /home/kechang/Codes/TinyStudentINFOWeb/src/Handlers.cpp
 CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o: CMakeFiles/TinyStudentINFOWeb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o -MF CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o.d -o CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o -c /Users/kechang/Codes/TinyStudentINFOWeb/src/Handlers.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o -MF CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o.d -o CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o -c /home/kechang/Codes/TinyStudentINFOWeb/src/Handlers.cpp
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/kechang/Codes/TinyStudentINFOWeb/src/Handlers.cpp > CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kechang/Codes/TinyStudentINFOWeb/src/Handlers.cpp > CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.i
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/kechang/Codes/TinyStudentINFOWeb/src/Handlers.cpp -o CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kechang/Codes/TinyStudentINFOWeb/src/Handlers.cpp -o CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.s
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o: CMakeFiles/TinyStudentINFOWeb.dir/flags.make
-CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o: /Users/kechang/Codes/TinyStudentINFOWeb/src/NetServer.cpp
+CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o: /home/kechang/Codes/TinyStudentINFOWeb/src/NetServer.cpp
 CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o: CMakeFiles/TinyStudentINFOWeb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o -MF CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o.d -o CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o -c /Users/kechang/Codes/TinyStudentINFOWeb/src/NetServer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o -MF CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o.d -o CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o -c /home/kechang/Codes/TinyStudentINFOWeb/src/NetServer.cpp
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/kechang/Codes/TinyStudentINFOWeb/src/NetServer.cpp > CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kechang/Codes/TinyStudentINFOWeb/src/NetServer.cpp > CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.i
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/kechang/Codes/TinyStudentINFOWeb/src/NetServer.cpp -o CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kechang/Codes/TinyStudentINFOWeb/src/NetServer.cpp -o CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.s
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o: CMakeFiles/TinyStudentINFOWeb.dir/flags.make
-CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o: /Users/kechang/Codes/TinyStudentINFOWeb/src/Utils.cpp
+CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o: /home/kechang/Codes/TinyStudentINFOWeb/src/Utils.cpp
 CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o: CMakeFiles/TinyStudentINFOWeb.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o -MF CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o.d -o CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o -c /Users/kechang/Codes/TinyStudentINFOWeb/src/Utils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o -MF CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o.d -o CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o -c /home/kechang/Codes/TinyStudentINFOWeb/src/Utils.cpp
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/kechang/Codes/TinyStudentINFOWeb/src/Utils.cpp > CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kechang/Codes/TinyStudentINFOWeb/src/Utils.cpp > CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.i
 
 CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/kechang/Codes/TinyStudentINFOWeb/src/Utils.cpp -o CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kechang/Codes/TinyStudentINFOWeb/src/Utils.cpp -o CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.s
 
 # Object files for target TinyStudentINFOWeb
 TinyStudentINFOWeb_OBJECTS = \
@@ -172,9 +172,9 @@ TinyStudentINFOWeb: CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o
 TinyStudentINFOWeb: CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o
 TinyStudentINFOWeb: CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o
 TinyStudentINFOWeb: CMakeFiles/TinyStudentINFOWeb.dir/build.make
-TinyStudentINFOWeb: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk/usr/lib/libsqlite3.tbd
+TinyStudentINFOWeb: /usr/lib/x86_64-linux-gnu/libsqlite3.so
 TinyStudentINFOWeb: CMakeFiles/TinyStudentINFOWeb.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable TinyStudentINFOWeb"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable TinyStudentINFOWeb"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/TinyStudentINFOWeb.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -186,6 +186,6 @@ CMakeFiles/TinyStudentINFOWeb.dir/clean:
 .PHONY : CMakeFiles/TinyStudentINFOWeb.dir/clean
 
 CMakeFiles/TinyStudentINFOWeb.dir/depend:
-	cd /Users/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/kechang/Codes/TinyStudentINFOWeb /Users/kechang/Codes/TinyStudentINFOWeb /Users/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug /Users/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug /Users/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles/TinyStudentINFOWeb.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kechang/Codes/TinyStudentINFOWeb /home/kechang/Codes/TinyStudentINFOWeb /home/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug /home/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug /home/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug/CMakeFiles/TinyStudentINFOWeb.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/TinyStudentINFOWeb.dir/depend
 

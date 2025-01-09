@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "TinyStudentINFOWeb::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-TinyStudentINFOWeb-Debug-a388e54eca54b2fca0c1.json",
+					"jsonFile" : "target-TinyStudentINFOWeb-Debug-a662f5f3d7743e3e13d2.json",
 					"name" : "TinyStudentINFOWeb",
 					"projectIndex" : 0
 				}
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug",
-		"source" : "/Users/kechang/Codes/TinyStudentINFOWeb"
+		"build" : "/home/kechang/Codes/TinyStudentINFOWeb/cmake-build-debug",
+		"source" : "/home/kechang/Codes/TinyStudentINFOWeb"
 	},
 	"version" : 
 	{

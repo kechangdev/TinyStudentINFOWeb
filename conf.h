@@ -14,16 +14,16 @@
 #define THREAD_POOL_SIZE 30
 
 // Mac
-#define WWW_ADDR "/Users/kechang/Codes/TinyStudentINFOWeb/www"
-#define DB_ADDR "/Users/kechang/Codes/TinyStudentINFOWeb/db/autasker.db"
+// #define WWW_ADDR "/Users/kechang/Codes/TinyStudentINFOWeb/www"
+// #define DB_ADDR "/Users/kechang/Codes/TinyStudentINFOWeb/db/autasker.db"
 
 // Laptop
 // #define WWW_ADDR "/home/kechang/Codes/TinyStudentINFOWeb/www"
 // #define DB_ADDR "/home/kechang/Codes/TinyStudentINFOWeb/db/autasker.db"
 
 // Docker
-// #define WWW_ADDR "/app/www"
-// #define DB_ADDR "/app/db/autasker.db"
+#define WWW_ADDR "/app/www"
+#define DB_ADDR "/app/db/autasker.db"
 
 // API
 #define ROOT_PATH "/"
