@@ -35,39 +35,90 @@ std::string Utils::getCurrentTime() {
     return std::string(buffer);
 }
 
+// std::string Utils::getTimeAndMessage(int user_id, std::string level, std::string msg) {
+//     // 获取当前时间
+//     std::time_t now = std::time(nullptr);
+//     std::tm* localTime = std::localtime(&now);
+//
+//     // 格式化时间为 YYYY-MM-DD : HH-MM-SS
+//     char buffer[30]; // 足够存储格式化的时间字符串
+//     std::strftime(buffer, sizeof(buffer), "%Y-%m-%d:%H-%M-%S", localTime);
+//     std::string time = std::string(buffer);
+//
+//     std::string res = "[" + time + "] " + "[" + level + "] " + msg;
+//
+//     DatabaseManager& dbManager = DatabaseManager::getInstance();
+//     sqlite3* db = dbManager.getDB();
+//     const char* sql = "INSERT INTO logs (user_id, log_level, message, timestamp) VALUES (?, ?, ?, ?);";
+//     sqlite3_stmt* stmt;
+//     if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+//         // std::cerr << "Failed to prepare log insert statement: " << sqlite3_errmsg(db) << std::endl;
+//         return res + " & " + "Failed to prepare log insert statement: " + sqlite3_errmsg(db);
+//     }
+//     sqlite3_bind_int(stmt, 1, user_id);
+//     sqlite3_bind_text(stmt, 2, level.c_str(), -1, SQLITE_TRANSIENT);
+//     sqlite3_bind_text(stmt, 3, msg.c_str(), -1, SQLITE_TRANSIENT);
+//     sqlite3_bind_int64(stmt, 4, now);
+//     // 执行插入操作
+//     if (sqlite3_step(stmt) != SQLITE_DONE) {
+//         // std::cerr << "Failed to execute log insert statement: " << sqlite3_errmsg(db) << std::endl;
+//         return res + " & " + "Failed to execute log insert statement: " + sqlite3_errmsg(db);
+//     }
+//
+//     // 释放语句对象
+//     sqlite3_finalize(stmt);
+//
+//     return res;
+// }
 std::string Utils::getTimeAndMessage(int user_id, std::string level, std::string msg) {
-    // 获取当前时间
+    // 1. 获取本地时间、格式化为字符串
     std::time_t now = std::time(nullptr);
     std::tm* localTime = std::localtime(&now);
-
-    // 格式化时间为 YYYY-MM-DD : HH-MM-SS
-    char buffer[30]; // 足够存储格式化的时间字符串
+    char buffer[30];
     std::strftime(buffer, sizeof(buffer), "%Y-%m-%d:%H-%M-%S", localTime);
     std::string time = std::string(buffer);
 
+    // 2. 构建返回日志字符串（此处与数据库无关）
     std::string res = "[" + time + "] " + "[" + level + "] " + msg;
 
-    DatabaseManager& dbManager = DatabaseManager::getInstance();
-    sqlite3* db = dbManager.getDB();
-    const char* sql = "INSERT INTO logs (user_id, log_level, message, timestamp) VALUES (?, ?, ?, ?);";
-    sqlite3_stmt* stmt;
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
-        // std::cerr << "Failed to prepare log insert statement: " << sqlite3_errmsg(db) << std::endl;
-        return res + " & " + "Failed to prepare log insert statement: " + sqlite3_errmsg(db);
-    }
-    sqlite3_bind_int(stmt, 1, user_id);
-    sqlite3_bind_text(stmt, 2, level.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 3, msg.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_int64(stmt, 4, now);
-    // 执行插入操作
-    if (sqlite3_step(stmt) != SQLITE_DONE) {
-        // std::cerr << "Failed to execute log insert statement: " << sqlite3_errmsg(db) << std::endl;
-        return res + " & " + "Failed to execute log insert statement: " + sqlite3_errmsg(db);
+    // 3. 在执行数据库操作前，先加锁
+    {
+        std::lock_guard<std::mutex> lock(DatabaseManager::getInstance().dbMutex);
+
+        DatabaseManager& dbManager = DatabaseManager::getInstance();
+        sqlite3* db = dbManager.getDB();
+        if (!db) {
+            // 如果 db 尚未初始化，可以直接返回
+            return res + " & " + "Database not initialized.";
+        }
+
+        const char* sql = "INSERT INTO logs (user_id, log_level, message, timestamp) VALUES (?, ?, ?, ?);";
+        sqlite3_stmt* stmt = nullptr;
+
+        // 准备语句
+        if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK) {
+            std::string err = sqlite3_errmsg(db);
+            return res + " & " + "Failed to prepare log insert statement: " + err;
+        }
+
+        // 绑定参数
+        sqlite3_bind_int(stmt, 1, user_id);
+        sqlite3_bind_text(stmt, 2, level.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_text(stmt, 3, msg.c_str(), -1, SQLITE_TRANSIENT);
+        sqlite3_bind_int64(stmt, 4, now);
+
+        // 执行插入
+        if (sqlite3_step(stmt) != SQLITE_DONE) {
+            std::string err = sqlite3_errmsg(db);
+            sqlite3_finalize(stmt);
+            return res + " & " + "Failed to execute log insert statement: " + err;
+        }
+
+        // 释放语句对象
+        sqlite3_finalize(stmt);
     }
 
-    // 释放语句对象
-    sqlite3_finalize(stmt);
-
+    // 4. 返回最终日志字符串（若数据库插入成功，则不附带错误信息）
     return res;
 }
 

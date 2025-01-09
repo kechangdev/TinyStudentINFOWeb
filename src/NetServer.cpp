@@ -26,8 +26,10 @@ void NetServer::setHandler(const std::string& path, RequestHandler handler) {
     handlers[path] = handler;
 }
 
-// 启动并运行服务器，阻塞调用线程
+// 线程池版本
 void NetServer::run() {
+    // 初始化线程池
+    ThreadPool pool(THREAD_POOL_SIZE);
 
     struct sockaddr_in address; // 定义地址结构
     int opt = 1; // 套接字选项
@@ -87,13 +89,16 @@ void NetServer::run() {
             continue; // 继续接受下一个连接
         }
 
-        // 处理客户端连接
-        handleClient(clientSocket, clientAddress);
+        // 将处理客户端的任务提交给线程池
+        pool.enqueue([this, clientSocket, clientAddress]() {
+            this->handleClient(clientSocket, clientAddress);
+        });
     }
 
     // 关闭服务器套接字
     close(serverSocket);
 }
+
 // 处理单个客户端连接的函数
 void NetServer::handleClient(int clientSocket, const struct sockaddr_in& clientAddress) {
     // 获取客户端的 IP 地址
@@ -212,91 +217,8 @@ void NetServer::handleClient(int clientSocket, const struct sockaddr_in& clientA
     close(clientSocket); // 关闭客户端套接字
 }
 
-
-// // 多线程版本
+// 启动并运行服务器，阻塞调用线程
 // void NetServer::run() {
-//     struct sockaddr_in address; // 定义地址结构
-//     int opt = 1; // 套接字选项
-//     socklen_t addrlen = sizeof(address); // 地址结构的长度
-//
-//     // 创建套接字
-//     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
-//     if (serverSocket == -1) {
-//         std::cout << Utils::getTimeAndMessage(0, "INFO", "Socket creation failed.") << std::endl;
-//         return;
-//     }
-//     std::cout << Utils::getTimeAndMessage(0, "INFO", "Socket creation Success.") << std::endl;
-//
-//     // 设置套接字选项
-//     if (setsockopt(serverSocket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
-//         std::cout << Utils::getTimeAndMessage(0, "INFO", "Socket setsockopt failed.") << std::endl;
-//         close(serverSocket);
-//         return;
-//     }
-//     std::cout << Utils::getTimeAndMessage(0, "INFO", "Socket setsockopt Success.") << std::endl;
-//
-//     // 配置地址结构
-//     memset(&address, 0, sizeof(address));
-//     address.sin_family = AF_INET; // IPv4
-//     address.sin_addr.s_addr = INADDR_ANY; // 监听所有可用接口
-//     address.sin_port = htons(serverPort); // 设置端口，使用网络字节序
-//
-//     // 绑定套接字到指定的地址和端口
-//     if (bind(serverSocket, (struct sockaddr *)&address, sizeof(address)) < 0) {
-//         std::cout << Utils::getTimeAndMessage(0, "INFO", "IPV4:PORT Bind Socket failed.") << std::endl;
-//         close(serverSocket);
-//         return;
-//     }
-//     std::cout << Utils::getTimeAndMessage(0, "INFO", "IPV4:PORT Bind Socket Success.") << std::endl;
-//
-//     // 开始监听，设置最大等待连接数
-//     if (listen(serverSocket, MAX_CONNECT_NUM) < 0) {
-//         std::cout << Utils::getTimeAndMessage(0, "INFO", "Listen Socket failed.") << std::endl;
-//         close(serverSocket);
-//         return;
-//     }
-//     std::cout << Utils::getTimeAndMessage(0, "INFO", "Listen Socket Success.") << std::endl;
-//
-//     isRunning = true;
-//     std::cout << Utils::getTimeAndMessage(0, "INFO", "Server started on port " + std::to_string(serverPort)) << std::endl;
-//     std::cout << Utils::getTimeAndMessage(0, "INFO", "Waiting for connection...") << std::endl;
-//
-//     // 主循环，持续接受并处理客户端连接
-//     while (isRunning) {
-//         struct sockaddr_in clientAddress;
-//         socklen_t clientAddrLen = sizeof(clientAddress);
-//         int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddrLen);
-//         if (clientSocket < 0) {
-//             if (isRunning) { // 如果服务器仍在运行，输出错误信息
-//                 std::cout << Utils::getTimeAndMessage(0, "INFO", "Socket accept failed.") << std::endl;
-//             }
-//             continue; // 继续接受下一个连接
-//         }
-//
-//         // 获取客户端信息（可选）
-//         char clientIP[INET_ADDRSTRLEN];
-//         inet_ntop(AF_INET, &(clientAddress.sin_addr), clientIP, INET_ADDRSTRLEN);
-//         int clientPort = ntohs(clientAddress.sin_port);
-//         std::cout << Utils::getTimeAndMessage(0, "INFO", "Accepted connection from " + std::string(clientIP) + ":" + std::to_string(clientPort)) << std::endl;
-//
-//         // 创建一个新的线程来处理客户端连接
-//         try {
-//             std::thread clientThread(&NetServer::handleClient, this, clientSocket, clientAddress);
-//             clientThread.detach(); // 分离线程，使其独立运行
-//         } catch (const std::exception& e) {
-//             std::cout << Utils::getTimeAndMessage(0, "INFO", "Failed to create thread: " + std::string(e.what())) << std::endl;
-//             close(clientSocket); // 关闭客户端套接字
-//         }
-//     }
-//
-//     // 关闭服务器套接字
-//     close(serverSocket);
-// }
-
-// 线程池版本
-// void NetServer::run() {
-//     // 初始化线程池
-//     ThreadPool pool(THREAD_POOL_SIZE);
 //
 //     struct sockaddr_in address; // 定义地址结构
 //     int opt = 1; // 套接字选项
@@ -356,10 +278,8 @@ void NetServer::handleClient(int clientSocket, const struct sockaddr_in& clientA
 //             continue; // 继续接受下一个连接
 //         }
 //
-//         // 将处理客户端的任务提交给线程池
-//         pool.enqueue([this, clientSocket, clientAddress]() {
-//             this->handleClient(clientSocket, clientAddress);
-//         });
+//         // 处理客户端连接
+//         handleClient(clientSocket, clientAddress);
 //     }
 //
 //     // 关闭服务器套接字

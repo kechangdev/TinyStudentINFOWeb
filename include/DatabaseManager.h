@@ -19,13 +19,12 @@ public:
     // 禁止通过拷贝构造函数和拷贝赋值操作符复制 DatabaseManager 实例，确保单例模式的唯一性，避免多个实例导致资源竞争或不一致。
     DatabaseManager(const DatabaseManager&) = delete;
     DatabaseManager& operator=(const DatabaseManager&) = delete;
-
+    std::mutex dbMutex;
 private:
     DatabaseManager();
     ~DatabaseManager();
 
     sqlite3* db;
-    std::mutex dbMutex;
 };
 
 

@@ -12,8 +12,16 @@
 #define SERVER_PORT 10086
 #define MAX_CONNECT_NUM 10
 #define THREAD_POOL_SIZE 30
-#define WWW_ADDR "/home/kechang/Codes/TinyStudentINFOWeb/www"
-#define DB_ADDR "/home/kechang/Codes/TinyStudentINFOWeb/db/autasker.db"
+
+// Mac
+#define WWW_ADDR "/Users/kechang/Codes/TinyStudentINFOWeb/www"
+#define DB_ADDR "/Users/kechang/Codes/TinyStudentINFOWeb/db/autasker.db"
+
+// Laptop
+// #define WWW_ADDR "/home/kechang/Codes/TinyStudentINFOWeb/www"
+// #define DB_ADDR "/home/kechang/Codes/TinyStudentINFOWeb/db/autasker.db"
+
+// Docker
 // #define WWW_ADDR "/app/www"
 // #define DB_ADDR "/app/db/autasker.db"
 
