@@ -66,8 +66,7 @@ docker run --rm -d -p 18899:10086 tinystudentinfoweb:latest
 # 主逻辑
 
 ## 后端
-
-![image.png](TinyStudentINFOWeb%201734fa24e0328049a73acb39b9eefce1/image.png)
+![image](https://github.com/user-attachments/assets/849a59e1-5513-4851-b561-2577c9282e6c)
 
 ## 前端
 
