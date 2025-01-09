@@ -1,9 +1,15 @@
 # ninja log v6
-875	935	1736232785045036398	TinyStudentINFOWeb	5a9df30766040952
-1	497	1736232784171036351	CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o	bf47f35211fc074d
-1	22	1736232808546037653	build.ninja	ae1c056fe696ffd8
+1238	1292	1736242500477019465	TinyStudentINFOWeb	5a9df30766040952
+1	708	1736242499240019399	CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o	bf47f35211fc074d
+0	27	1736344634068142658	build.ninja	ae1c056fe696ffd8
 1	339	1736232742153034107	CMakeFiles/TinyStudentINFOWeb.dir/src/DatabaseManager.cpp.o	3ed919764618510e
 1	462	1736232742153034107	CMakeFiles/TinyStudentINFOWeb.dir/src/Auth.cpp.o	b0dd094671728e27
-1	710	1736232784171036351	CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o	41ddae8513c72996
-1	875	1736232784171036351	CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o	26d1b24dc5fbcaf6
-1	742	1736232784171036351	CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o	99e4f512d649177
+3	911	1736242499242019399	CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o	41ddae8513c72996
+2	1237	1736242499241019399	CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o	26d1b24dc5fbcaf6
+2	960	1736242499241019399	CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o	99e4f512d649177
+1	26	1736344634068142658	build.ninja	ae1c056fe696ffd8
+1	488	1736344634077142658	CMakeFiles/TinyStudentINFOWeb.dir/main.cpp.o	bf47f35211fc074d
+2	711	1736344634078142658	CMakeFiles/TinyStudentINFOWeb.dir/src/Utils.cpp.o	41ddae8513c72996
+2	760	1736344634078142658	CMakeFiles/TinyStudentINFOWeb.dir/src/Handlers.cpp.o	99e4f512d649177
+2	896	1736344634078142658	CMakeFiles/TinyStudentINFOWeb.dir/src/NetServer.cpp.o	26d1b24dc5fbcaf6
+896	948	1736344634972142706	TinyStudentINFOWeb	5a9df30766040952
